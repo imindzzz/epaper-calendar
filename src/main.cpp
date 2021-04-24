@@ -420,8 +420,6 @@ void drawCornerTest()
   }
 }
 
-
-
 void drawFont(const char name[], const GFXfont *f)
 {
   //display.setRotation(0);
@@ -521,52 +519,78 @@ void showPartialUpdate()
   }
 }
 
-// void drawBitmaps()
-// {
-//   display.setFullWindow();
-// #ifdef _GxBitmaps104x212_H_
-//   drawBitmaps104x212();
-// #endif
-// #ifdef _GxBitmaps128x250_H_
-//   drawBitmaps128x250();
-// #endif
-// #ifdef _GxBitmaps128x296_H_
-//   drawBitmaps128x296();
-// #endif
-// #ifdef _GxBitmaps176x264_H_
-//   drawBitmaps176x264();
-// #endif
-// #ifdef _GxBitmaps400x300_H_
-//   drawBitmaps400x300();
-// #endif
-// #ifdef _GxBitmaps640x384_H_
-//   drawBitmaps640x384();
-// #endif
-// #ifdef _WS_Bitmaps800x600_H_
-//   drawBitmaps800x600();
-// #endif
-//   // 3-color
-// #ifdef _GxBitmaps3c104x212_H_
-//   drawBitmaps3c104x212();
-// #endif
-// #ifdef _GxBitmaps3c128x296_H_
-//   drawBitmaps3c128x296();
-// #endif
-// #ifdef _GxBitmaps3c176x264_H_
-//   drawBitmaps3c176x264();
-// #endif
-// #ifdef _GxBitmaps3c400x300_H_
-//   drawBitmaps3c400x300();
-// #endif
-//   // show these after the specific bitmaps
-// #ifdef _GxBitmaps200x200_H_
-//   drawBitmaps200x200();
-// #endif
-//   // 3-color
-// #ifdef _GxBitmaps3c200x200_H_
-//   drawBitmaps3c200x200();
-// #endif
-// }
+#ifdef _GxBitmaps400x300_H_
+void drawBitmaps400x300()
+{
+#if !defined(__AVR)
+  const unsigned char *bitmaps[] =
+      {
+          Bitmap400x300_1, Bitmap400x300_2};
+#else
+  const unsigned char *bitmaps[] = {}; // not enough code space
+#endif
+  if (display.epd2.panel == GxEPD2::GDEW042T2)
+  {
+    for (uint16_t i = 0; i < sizeof(bitmaps) / sizeof(char *); i++)
+    {
+      display.firstPage();
+      do
+      {
+        display.fillScreen(GxEPD_WHITE);
+        display.drawInvertedBitmap(0, 0, bitmaps[i], display.epd2.WIDTH, display.epd2.HEIGHT, GxEPD_BLACK);
+      } while (display.nextPage());
+      delay(2000);
+    }
+  }
+}
+#endif
+
+void drawBitmaps()
+{
+  display.setFullWindow();
+#ifdef _GxBitmaps104x212_H_
+  drawBitmaps104x212();
+#endif
+#ifdef _GxBitmaps128x250_H_
+  drawBitmaps128x250();
+#endif
+#ifdef _GxBitmaps128x296_H_
+  drawBitmaps128x296();
+#endif
+#ifdef _GxBitmaps176x264_H_
+  drawBitmaps176x264();
+#endif
+#ifdef _GxBitmaps400x300_H_
+  drawBitmaps400x300();
+#endif
+#ifdef _GxBitmaps640x384_H_
+  drawBitmaps640x384();
+#endif
+#ifdef _WS_Bitmaps800x600_H_
+  drawBitmaps800x600();
+#endif
+  // 3-color
+#ifdef _GxBitmaps3c104x212_H_
+  drawBitmaps3c104x212();
+#endif
+#ifdef _GxBitmaps3c128x296_H_
+  drawBitmaps3c128x296();
+#endif
+#ifdef _GxBitmaps3c176x264_H_
+  drawBitmaps3c176x264();
+#endif
+#ifdef _GxBitmaps3c400x300_H_
+  drawBitmaps3c400x300();
+#endif
+  // show these after the specific bitmaps
+#ifdef _GxBitmaps200x200_H_
+  drawBitmaps200x200();
+#endif
+  // 3-color
+#ifdef _GxBitmaps3c200x200_H_
+  drawBitmaps3c200x200();
+#endif
+}
 
 #ifdef _GxBitmaps200x200_H_
 void drawBitmaps200x200()
@@ -750,32 +774,6 @@ void drawBitmaps176x264()
       };
 #endif
   if (display.epd2.panel == GxEPD2::GDEW027W3)
-  {
-    for (uint16_t i = 0; i < sizeof(bitmaps) / sizeof(char *); i++)
-    {
-      display.firstPage();
-      do
-      {
-        display.fillScreen(GxEPD_WHITE);
-        display.drawInvertedBitmap(0, 0, bitmaps[i], display.epd2.WIDTH, display.epd2.HEIGHT, GxEPD_BLACK);
-      } while (display.nextPage());
-      delay(2000);
-    }
-  }
-}
-#endif
-
-#ifdef _GxBitmaps400x300_H_
-void drawBitmaps400x300()
-{
-#if !defined(__AVR)
-  const unsigned char *bitmaps[] =
-      {
-          Bitmap400x300_1, Bitmap400x300_2};
-#else
-  const unsigned char *bitmaps[] = {}; // not enough code space
-#endif
-  if (display.epd2.panel == GxEPD2::GDEW042T2)
   {
     for (uint16_t i = 0; i < sizeof(bitmaps) / sizeof(char *); i++)
     {
@@ -1084,7 +1082,7 @@ void setup()
   delay(1000);
   showFont("FreeMonoBold9pt7b", &FreeMonoBold9pt7b);
   delay(1000);
-  // drawBitmaps();
+  drawBitmaps();
   if (display.epd2.hasPartialUpdate)
   {
     showPartialUpdate();
